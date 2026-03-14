@@ -1,0 +1,25 @@
+.button{
+    border: none;
+    outline: none;
+    border-radius: 0.7rem;
+    padding-inline: 1rem;
+    padding-block: 0.6rem;
+    -webkit-border-radius: 0.7rem;
+    -moz-border-radius: 0.7rem;
+    -ms-border-radius: 0.7rem;
+    -o-border-radius: 0.7rem;
+    transition: all 0.3 ease-in-out;
+    cursor: pointer;
+    &.primary-btn{
+    
+        background-color: #fdae3f;
+    }
+    &:active{
+        transform: scale(0.9);
+        -webkit-transform: scale(0.9);
+        -moz-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+        -o-transform: scale(0.9);
+}
+}
+    
