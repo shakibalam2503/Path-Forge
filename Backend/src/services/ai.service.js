@@ -35,87 +35,50 @@ const interviewReportSchema = z.object({
 async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
 
 
-     const prompt=`
-  Generate an interview preparation report with with the following this for a candidate.
+     const prompt = `
+Generate an interview preparation report.
 
-You MUST return ONLY  JSON format that strictly follows the structure below.
-
-JSON Structure:
+Return ONLY valid JSON following this structure:
 
 {
-  "title": string,
-  "matchScore": number,
+  "title": "",
+  "matchScore": 0,
   "technicalQuestions": [
     {
-      "question": string,
-      "intention": string,
-      "answer": string
+      "question": "",
+      "intention": "",
+      "answer": ""
     }
   ],
   "behavioralQuestions": [
     {
-      "question": string,
-      "intention": string,
-      "answer": string
+      "question": "",
+      "intention": "",
+      "answer": ""
     }
   ],
   "skillGaps": [
     {
-      "skill": string,
-      "severity": "Low" | "Medium" | "High"
+      "skill": "",
+      "severity": "low"
     }
   ],
   "preparationPlan": [
     {
-      "day": number,
-      "focus": string,
-      "tasks": [string]
+      "day": 1,
+      "focus": "",
+      "tasks": [""]
     }
   ]
 }
 
-Field Explanation:
-
-"title"  
-- The job title the candidate is preparing for.
-
-"matchScore" 
-- A number between 0 and 100 indicating how well the candidate's profile matches the job description.
-
-"technicalQuestions" 
-- An array of realistic technical interview questions relevant to the job.
-- Each object must include:
-  - question
-  - intention
-  - answer (clear guidance on how to answer)
-
-"behavioralQuestions"
-- Behavioral interview questions related to teamwork, learning ability, problem solving, etc.
-- Each object must include:
-  - question
-  - intention
-  - answer
-
-"skillGaps"  
-- Skills the candidate lacks for the job.
-- Each object must contain:
-  - skill
-  - severity (low, medium, or high)
-
-"preparationPlan" 
-- A preparation roadmap.
-- Each object must include:
-  - day (starting from 1)
-  - focus (topic to focus on that day)
-  - tasks (list of tasks)
-
-Important Rules:
-- Return ONLY JSON.
-- Do NOT include explanations.
-- Do NOT include HTML.
-- Do NOT include placeholder text like "question_placeholder".
-- Ensure arrays contain proper objects, not strings.
-- Ensure JSON is valid.
+Rules:
+- Return ONLY JSON
+- Do not include explanations
+- Do not include HTML
+- Arrays must contain objects
+- JSON must be valid
+- severity must be one of: low, medium, high
 
 Candidate Data:
 
@@ -127,7 +90,7 @@ ${selfDescription}
 
 Job Description:
 ${jobDescription}
-`
+`;
 
     const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
