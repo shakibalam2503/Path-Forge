@@ -95,8 +95,8 @@ const geminiResponseSchema = {
 };
 
 
-async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
-
+async function generateInterviewReport({ selfDescription, resume, jobDescription }) {
+    try{
     const prompt = `
 Generate a highly detailed interview preparation report.
 Analyze the candidate's data deeply against the job description.
@@ -113,17 +113,23 @@ Job Description: ${jobDescription}
         config: {
             responseMimeType: "application/json",
             responseSchema: geminiResponseSchema, // Pass the native schema here
+        
         }
     });
 
-    // Parse the text into a JSON object
+    // Parsing  the text into a JSON object
     const rawJson = JSON.parse(response.text);
 
     // Validate and type-cast the result using your Zod schema
     const validatedReport = interviewReportSchema.parse(rawJson);
     
-    console.log(JSON.stringify(validatedReport, null, 2));
+    //console.log(JSON.stringify(validatedReport, null, 2));
     return validatedReport;
 }
+catch(err){
+    console.log("Api error")
+}
+}
+
 
 module.exports = generateInterviewReport;
