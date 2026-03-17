@@ -1,0 +1,344 @@
+$bg-color: #021524;
+$card-bg: #032132;
+$text-primary: whitesmoke;
+$text-secondary: #8f95b2;
+$pink-color: #fdae3f;
+$pink-hover: #ffc973;
+$border-color: #0e2a35;
+$input-bg: #011627;
+$badge-red-bg: rgba(#fdae3f, 0.15);
+$badge-red-text: #fdae3f;
+$info-bg: #031f2a;
+$info-text: #8da4d0;
+$info-icon: #3b82f6;
+
+.home-container {
+  font-family: 'Noto Sans', sans-serif;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $bg-color;
+  color: $text-primary;
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .home-header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+
+      span {
+        color: $pink-color;
+      }
+    }
+
+    p {
+      color: $text-secondary;
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .interview-card {
+    background-color: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-content {
+    display: flex;
+    padding: 2rem;
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
+
+  .vertical-divider {
+    width: 1px;
+    background-color: #242838;
+    margin: 0 0.5rem;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      height: 1px;
+      margin: 1rem 0;
+    }
+  }
+
+  .left-column, .right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      svg {
+        color: $pink-color;
+      }
+      h2 {
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin: 0;
+      }
+    }
+  }
+
+  .badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+
+    &.required, &.best-results {
+      background-color: $badge-red-bg;
+      color: $badge-red-text;
+    }
+  }
+
+  h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem 0;
+    color: $text-primary;
+  }
+
+  .textarea-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    textarea {
+      flex: 1;
+      width: 100%;
+      background-color: $input-bg;
+      border: 1px solid #2d3246;
+      border-radius: 8px;
+      padding: 1rem;
+      color: $text-primary;
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 0.9rem;
+      resize: none;
+      transition: border-color 0.2s;
+      line-height: 1.5;
+
+      &:focus {
+        outline: none;
+        border-color: rgba($pink-color, 0.6);
+      }
+
+      &::placeholder {
+        color: #5d637a;
+      }
+    }
+
+    .char-count {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      font-size: 0.75rem;
+      color: #5d637a;
+      pointer-events: none;
+    }
+  }
+
+  .left-column .textarea-wrapper {
+    min-height: 400px;
+  }
+
+  .right-column {
+    .upload-section {
+      margin-bottom: 1.5rem;
+      
+      .upload-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+
+        h3 {
+          margin: 0;
+        }
+      }
+
+      .drag-drop-area {
+        display: block;
+        background-color: $input-bg;
+        border: 1px dashed #3a415a;
+        border-radius: 8px;
+        padding: 2.5rem 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+          border-color: rgba($pink-color, 0.6);
+          background-color: #1e2230;
+        }
+
+        .upload-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.5rem;
+
+          .upload-icon {
+            color: $pink-color;
+            margin-bottom: 0.25rem;
+          }
+
+          .primary-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin: 0;
+          }
+
+          .secondary-text {
+            font-size: 0.8rem;
+            color: #5d637a;
+            margin: 0;
+          }
+        }
+      }
+    }
+
+    .or-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 1.5rem 0;
+      color: #5d637a;
+      font-size: 0.8rem;
+      font-weight: 500;
+
+      &::before,
+      &::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #2d3246;
+      }
+
+      &::before {
+        margin-right: 1rem;
+      }
+
+      &::after {
+        margin-left: 1rem;
+      }
+    }
+
+    .self-desc-section {
+      margin-bottom: 1.5rem;
+      .textarea-wrapper {
+        min-height: 120px;
+        textarea {
+          border: 1px solid $pink-color; 
+          background-color: transparent;
+        }
+      }
+    }
+
+    .info-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      background-color: $info-bg;
+      border-radius: 6px;
+      padding: 1rem;
+
+      .info-icon {
+        color: $info-icon;
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #b0c4de;
+        line-height: 1.4;
+
+        strong {
+          color: white;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 2rem;
+    border-top: 1px solid #242838;
+    
+    @media (max-width: 600px) {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+      text-align: center;
+    }
+
+    .footer-info {
+      font-size: 0.8rem;
+      color: #5d637a;
+    }
+
+    .generate-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background-color: $pink-color;
+      color: $bg-color;
+      border: none;
+      border-radius: 6px;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba($pink-color, 0.4);
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: $pink-hover;
+        box-shadow: 0 6px 20px rgba($pink-color, 0.6);
+      }
+      
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+}
