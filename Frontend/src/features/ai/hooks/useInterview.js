@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { InterviewContex } from "../interview.contex";
-import { getInterviewReport, getInterviewReportById, getAllInterviewReports } from "../services/interview.api";
-import { useParams } from "react-router"; // ✅ FIXED
+import { getInterviewReport, getInterviewReportById, getAllInterviewReports ,getResumePdf} from "../services/interview.api";
+import { useParams } from "react-router"; 
 
 export function useInterview() {
     const contex = useContext(InterviewContex);
@@ -26,7 +26,7 @@ export function useInterview() {
             setLoading(false);
         }
 
-        return response?.interViewReport; // ✅ safe
+        return response?.interViewReport;
     }
 
     async function getReportById(interviewReportId) {
@@ -42,7 +42,7 @@ export function useInterview() {
             setLoading(false);
         }
 
-        return response?.report; // ✅ safe
+        return response?.report;
     }
 
     async function getAllReports() {
@@ -58,11 +58,25 @@ export function useInterview() {
             setLoading(false);
         }
 
-        return response?.interviewReports; // ✅ safe
+        return response?.interviewReports; 
     }
+        async function getpdfResume(interviewReportId){
+            setLoading(true)
+            let response=null
+            try{
+                response=await getResumePdf(interviewReportId)
+            }
+            catch(err){
+                console.error(err)
+            }
+            finally{
+                setLoading(false)
+            }
+            return response?.interviewReports;
+        }
 
     useEffect(() => {
-        console.log("PARAM ID:", interviewId); // 🔥 debug
+        console.log("PARAM ID:", interviewId); 
 
         if (interviewId) {
             getReportById(interviewId);
@@ -71,5 +85,5 @@ export function useInterview() {
         }
     }, [interviewId]);
 
-    return { loading, report, reports, getReport, getReportById, getAllReports };
+    return { loading, report, reports, getReport, getReportById, getAllReports ,getpdfResume};
 }

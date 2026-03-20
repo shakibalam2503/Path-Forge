@@ -34,3 +34,28 @@ export async function getAllInterviewReports() {
     const response=await api.get("/api/interview/report/allInterviewReport")
     return response.data        
 }
+
+/**
+ * @description service to convert resume and job description into pdf and send it to user 
+ */
+export async function getResumePdf(interviewReportId){
+
+
+    const response = await api.post(
+    `/api/interview/resume/pdf/${interviewReportId}`, 
+    {}, 
+    {
+      responseType: "blob"
+    }
+  );
+  
+    // Create a URL for the blob and trigger a download
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `resume_${interviewReportId}.pdf`);       
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+    return response.data
+}
