@@ -1,5 +1,7 @@
 const { GoogleGenAI, Type } = require("@google/genai");
+const { zodToJsonSchema } = require("zod-to-json-schema");
 const { z } = require("zod");
+const puppeteer = require("puppeteer")
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GOOGLE_GENAI_API_KEY
@@ -130,6 +132,51 @@ catch(err){
     console.log("Api error")
 }
 }
+async function generateHtmlResume({selfDescription,jobDescription,resume}) {
+    resumePdfSchema=z.object({
+        html:z.string().describe("The HTML content to be converted into PDF using any library like puppeteer or pdfkit")
+    })
+    const prompt = `
+Generate a professional resume in HTML format.
 
+Extract the candidate's NAME from the resume if available.
+If not available, generate a realistic name.
 
-module.exports = generateInterviewReport;
+Candidate Data:
+Resume: ${resume || "Not provided"}
+Self Description: ${selfDescription}
+Job Description: ${jobDescription}
+
+Return JSON:
+{
+  "html": "<complete resume HTML>"
+  the resume should be tailored to the job description and should highlight the candidate's strengths while addressing any potential weaknesses. The HTML should be well-structured, visually appealing, and suitable for conversion and minimal spacing  to PDF format.
+  The content of the resume should not sound generic or AI-generated and should be as close to human-written as possible, with a focus on authenticity and relevance to the job description.
+  you can highlight the content using some colours 
+  The content should be ats friendly and should include relevant keywords from the job description to increase the chances of passing through applicant tracking systems.
+  The resume should not be lengthy and should ideally be one page, but can extend to two pages if necessary to effectively showcase the candidate's qualifications and experience.
+
+}
+`;
+    const response=await ai.models.generateContent({
+        model:"gemini-2.5-flash",
+        contents:prompt,
+        config:{
+            responseMimeType:"application/json",
+            responseSchema:zodToJsonSchema(resumePdfSchema)
+        }
+    })
+    const jsonContent=JSON.parse(response.text)
+    return jsonContent.html;
+}
+async function convertHtmlToPdf(htmlContent) {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();   
+    await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+    const pdfBuffer = await page.pdf({ format: 'A4',margin:{top:"15mm",bottom:"15mm",left:"15mm",right:"15mm"} });
+    await browser.close();
+    return pdfBuffer;
+
+}
+
+module.exports = {generateInterviewReport,generateHtmlResume,convertHtmlToPdf};

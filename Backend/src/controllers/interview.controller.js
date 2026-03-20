@@ -1,5 +1,5 @@
 const pdfParse = require("pdf-parse");
-const generateInterviewReport=require("../services/ai.service")
+const {generateInterviewReport,generateHtmlResume,convertHtmlToPdf}=require("../services/ai.service")
 const interviewReportModel=require("../models/interviewReport.model")
 /**
  * @name generateInterviewReportController
@@ -71,4 +71,34 @@ async function getAllInterviewReportController(req,res) {
     res.status(404).json({"message":"could not find "})
   }
 }
-module.exports = { generateInterviewReportController,getInterviewReportByIdController ,getAllInterviewReportController};
+/**
+ * @name resumePdfGeneratorController
+ * @description convert user self description and job description into pdf and send it to user 
+ * @access Private  
+ */
+async function resumePdfGeneratorController(req,res){
+  const {interviewReportId}=req.params
+  try{
+    const report= await interviewReportModel.findById(interviewReportId)
+    if(!report){
+      return res.status(404).json({"message":"Not found or internal error occured"})
+    } 
+    const {selfDescription,jobDescription,resume}=report
+    const htmlContent=await generateHtmlResume({
+      selfDescription,jobDescription,resume: resume || ""})
+    const pdfBuffer=await convertHtmlToPdf(htmlContent)
+    res.set({
+      "Content-Type":"application/pdf", 
+      "Content-Disposition":`attachment; filename=resume_${interviewReportId}.pdf`
+    })
+    res.send(pdfBuffer)
+  } catch (err) {
+  console.error("ERROR:", err);
+  res.status(500).json({ message: err.message });
+}     
+}
+  
+
+
+
+module.exports = { generateInterviewReportController,getInterviewReportByIdController ,getAllInterviewReportController,resumePdfGeneratorController};

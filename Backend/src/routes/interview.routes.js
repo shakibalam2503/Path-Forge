@@ -25,7 +25,17 @@ interviewRouter.get("/report/allInterviewReport",authMiddleware.authUser,intervi
  * @description Get interview report based on interview id
  * @access Private
  */
+
+
 interviewRouter.get("/report/:interviewReportId",authMiddleware.authUser,interviewController.getInterviewReportByIdController)
+
+/**
+ * @route POST /api/interview/resume/pdf
+ * @description Generate PDF resume based on the data provided by user
+ * @access Private          
+ */
+
+interviewRouter.post("/resume/pdf/:interviewReportId",authMiddleware.authUser,interviewController.resumePdfGeneratorController)
 
 
 
