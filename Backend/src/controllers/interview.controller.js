@@ -32,4 +32,43 @@ catch(err){
     res.status(500).json({ message: err.message });
 }
 }
-module.exports = { generateInterviewReportController };
+/**
+ * 
+ * @name getInterViewByIdController 
+ * @description Get interview Report based on Id 
+ * @access Private
+ */
+async function getInterviewReportByIdController(req,res) {
+  const { interviewReportId } = req.params;
+  const report= await interviewReportModel.findOne({_id:interviewReportId,user:req.user.id})
+  if(!report){
+    return res.status(404).json({"message":"Not found or internal error occured"})
+  }
+  try{
+    res.status(200).json({
+      "message":"interview report fetched successfully",
+      report
+
+    })
+  }
+  catch(err){
+    res.status(404).json({"message":"Not found or internal error occured"})
+  }
+  
+}
+
+/**
+ * @name getAllInterviewReportController
+ * @description show all the report of the user 
+ * @access Private
+ */
+async function getAllInterviewReportController(req,res) { 
+  try{
+  const interviewReports= await interviewReportModel.find({user:req.user.id}).sort({createdAt:-1}).select("-resume -selfDescription -jobDescription -technicalQuestions -behavioralQuestions -skillGaps -__v -preparationPlan")
+  res.status(200).json({"message":"Data fetched successfully",interviewReports})
+  }
+  catch(err){
+    res.status(404).json({"message":"could not find "})
+  }
+}
+module.exports = { generateInterviewReportController,getInterviewReportByIdController ,getAllInterviewReportController};
