@@ -41,7 +41,12 @@ async function registerController(req, res) {
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1d" },
     );
-    res.cookie("token", token);
+    res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "None",
+  path: "/"
+});
     res.status(201).json({
       message: "User Registerd successfully",
       user: {
@@ -83,7 +88,12 @@ async function logInController(req, res) {
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1d" },
     );
-    res.cookie("token", token);
+    res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "None",
+  path: "/"
+});
     res.status(200).json({
       message: "Log in successful",
       user: {
