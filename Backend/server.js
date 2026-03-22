@@ -6,7 +6,7 @@ const dbConnect = require("./src/config/database");
 const app = require("./src/app");
 const {connectRedis} = require("./src/config/redis");
 
-const port_number = process.env.PORT_NUMBER;
+const port_number = process.env.PORT || 5000;
 
 dbConnect();
 connectRedis();
@@ -14,5 +14,5 @@ connectRedis();
 
 
 app.listen(port_number, () => {
-  console.log("listening at port 5000");
+  console.log(`listening at port ${port_number}`);
 });
